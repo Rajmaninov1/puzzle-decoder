@@ -12,7 +12,7 @@ async def observability_middleware(request: Request, call_next):
     from opentelemetry import trace
 
     # Set correlation ID
-    cid = request.headers.get('x-correlation-id') or str(uuid.uuid4())
+    cid = request.headers.get("x-correlation-id") or str(uuid.uuid4())
     correlation_id.set(cid)
 
     # Add correlation ID to current span
@@ -36,8 +36,8 @@ async def observability_middleware(request: Request, call_next):
     request_counter.labels(method=request.method, endpoint=request.url.path).inc()
     request_duration.observe(duration)
 
-    response.headers['x-correlation-id'] = cid
-    response.headers['api-version'] = api_version
-    response.headers['x-request-start-time'] = str(start_time)
-    response.headers['x-request-duration'] = f"{duration:.6f}"
+    response.headers["x-correlation-id"] = cid
+    response.headers["api-version"] = api_version
+    response.headers["x-request-start-time"] = str(start_time)
+    response.headers["x-request-duration"] = f"{duration:.6f}"
     return response

@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings
 
 class FragmentServiceConfig(BaseModel):
     """Fragment service configuration."""
+
     base_url: str = Field(default="http://puzzle-server:8080", description="Fragment service host")
     endpoint: str = Field(default="/fragment", description="API endpoint path")
     max_concurrent: int = Field(default=40, description="Max parallel requests")
@@ -16,13 +17,14 @@ class FragmentServiceConfig(BaseModel):
     @property
     def full_url(self) -> str:
         """Full service URL."""
-        if self.base_url.startswith(('http://', 'https://')):  # noqa
+        if self.base_url.startswith(("http://", "https://")):  # noqa
             return f"{self.base_url}{self.endpoint}"
         return f"https://{self.base_url}{self.endpoint}"
 
 
 class PuzzleServiceConfig(BaseModel):
     """Puzzle service configuration."""
+
     stream_threshold: int = Field(default=100, description="Fragment count to trigger puzzle text by streaming")
     chunk_size: int = Field(
         default=50, description="Streaming chunk size in case puzzle message bigger than stream_threshold"
@@ -31,6 +33,7 @@ class PuzzleServiceConfig(BaseModel):
 
 class LoggingConfig(BaseModel):
     """Logging configuration."""
+
     level: str = Field(default="INFO", description="Log level")
     format: str = Field(default="console", description="Log format")
     colorize: bool = Field(default=True, description="Enable colored logs")
@@ -42,6 +45,7 @@ class LoggingConfig(BaseModel):
 
 class Settings(BaseSettings):
     """Application settings."""
+
     logging: LoggingConfig = Field(default_factory=LoggingConfig)
     fragment_service: FragmentServiceConfig = Field(default_factory=FragmentServiceConfig)
     puzzle_service: PuzzleServiceConfig = Field(default_factory=PuzzleServiceConfig)

@@ -1,7 +1,7 @@
 import pytest
 
 from puzzle_solver.domain.models.fragment import Fragment
-from puzzle_solver.utils.fragment_utils import build_validated_url, find_fragment_bounds, estimate_id_for_index
+from puzzle_solver.utils.fragment_utils import build_validated_url, estimate_id_for_index, find_fragment_bounds
 
 
 class TestBuildValidatedUrl:

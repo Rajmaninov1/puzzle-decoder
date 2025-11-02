@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response
 
-from puzzle_solver.core.observability import get_metrics, CONTENT_TYPE_LATEST
+from puzzle_solver.core.observability import CONTENT_TYPE_LATEST, get_metrics
 
 router = APIRouter(tags=["observability"])
 

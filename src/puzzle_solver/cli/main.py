@@ -21,6 +21,7 @@ from puzzle_solver.domain.services.puzzle import PuzzleService
 
 async def main():  # Main CLI entry point for puzzle solving execution !!!
     import uuid
+
     from puzzle_solver.core.observability import correlation_id
 
     setup_logging()
@@ -51,7 +52,7 @@ def _display_results(logger, result) -> None:  # Display comprehensive puzzle so
     _display_completion_stats(logger, result)
 
     logger.info(separator)
-    logger.info('Less than one second! :D' if result.elapsed_seconds < 1.0 else ':( took more than one second')
+    logger.info("Less than one second! :D" if result.elapsed_seconds < 1.0 else ":( took more than one second")
 
 
 def _display_performance_stats(logger, result) -> None:  # Display timing and throughput performance metrics !!!

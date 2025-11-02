@@ -340,6 +340,22 @@ uv run pytest
 uv run pytest tests/unit/test_puzzle_service.py -v
 ```
 
+## 🔍 Code Quality
+
+```bash
+# Run linting
+uv run ruff check src/ tests/
+
+# Run formatting check
+uv run ruff format --check src/ tests/
+
+# Auto-fix linting issues
+uv run ruff check --fix src/ tests/
+
+# Auto-format code
+uv run ruff format src/ tests/
+```
+
 ___
 
 ## Monitoring

@@ -24,7 +24,7 @@ def sample_fragments():
     return [
         Fragment(id=1, index=0, text="Hello"),
         Fragment(id=2, index=1, text="world"),
-        Fragment(id=3, index=2, text="test")
+        Fragment(id=3, index=2, text="test"),
     ]
 
 

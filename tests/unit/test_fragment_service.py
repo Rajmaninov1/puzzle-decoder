@@ -9,11 +9,7 @@ from puzzle_solver.domain.services.fragment import FragmentService
 
 @pytest.fixture
 def fragment_config():
-    return FragmentServiceConfig(
-        base_url="https://test.com",
-        endpoint="/fragment",
-        initial_batch_size=5
-    )
+    return FragmentServiceConfig(base_url="https://test.com", endpoint="/fragment", initial_batch_size=5)
 
 
 @pytest.fixture
@@ -21,7 +17,7 @@ def sample_fragments():
     return [
         Fragment(id=1, index=0, text="Hello"),
         Fragment(id=2, index=1, text="world"),
-        Fragment(id=3, index=3, text="test")  # Missing index 2
+        Fragment(id=3, index=3, text="test"),  # Missing index 2
     ]
 
 
@@ -89,7 +85,7 @@ class TestFragmentService:
         complete_fragments = [
             Fragment(id=1, index=0, text="Hello"),
             Fragment(id=2, index=1, text="world"),
-            Fragment(id=3, index=2, text="test")
+            Fragment(id=3, index=2, text="test"),
         ]
         service.fetch_batch = AsyncMock(return_value=complete_fragments)
 
@@ -106,13 +102,15 @@ class TestFragmentService:
         # First call returns fragments with missing index 2
         # Second call returns the missing fragment
         missing_fragment = Fragment(id=4, index=2, text="missing")
-        service.fetch_batch = AsyncMock(side_effect=[
-            sample_fragments,  # Initial discovery
-            sample_fragments,  # Range 2
-            sample_fragments,  # Range 3  
-            sample_fragments,  # Range 4
-            [missing_fragment]  # Missing fragment fetch
-        ])
+        service.fetch_batch = AsyncMock(
+            side_effect=[
+                sample_fragments,  # Initial discovery
+                sample_fragments,  # Range 2
+                sample_fragments,  # Range 3
+                sample_fragments,  # Range 4
+                [missing_fragment],  # Missing fragment fetch
+            ]
+        )
 
         batch = await service.discover_fragments()
 

@@ -17,7 +17,7 @@ async def solve_puzzle(current_user: str = Depends(verify_token)):
         total_found=result.stats.total_found,
         completion_percentage=result.stats.completion_percentage,
         total_requests=result.stats.total_requests,
-        missing_count=result.stats.missing_count
+        missing_count=result.stats.missing_count,
     )
 
     return PuzzleSolveResponse(
@@ -25,5 +25,5 @@ async def solve_puzzle(current_user: str = Depends(verify_token)):
         elapsed_seconds=result.elapsed_seconds,
         stats=puzzle_stats,
         api_version="v1",
-        user=current_user
+        user=current_user,
     )

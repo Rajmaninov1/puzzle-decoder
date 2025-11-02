@@ -17,10 +17,7 @@ def setup_logging():
     _configure_structlog(log_level)
 
     logger = structlog.get_logger()
-    logger.info("Logger configured",
-                level=settings.LOG_LEVEL,
-                format=settings.LOG_FORMAT,
-                file=settings.LOG_FILE_PATH)
+    logger.info("Logger configured", level=settings.LOG_LEVEL, format=settings.LOG_FORMAT, file=settings.LOG_FILE_PATH)
     return logger
 
 
@@ -81,7 +78,7 @@ def _create_processors() -> List[Processor]:
 
 def _add_correlation_id(logger, method_name, event_dict):
     """Add correlation ID to log events."""
-    event_dict['correlation_id'] = correlation_id.get('')
+    event_dict["correlation_id"] = correlation_id.get("")
     return event_dict
 
 

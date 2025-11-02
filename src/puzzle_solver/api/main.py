@@ -20,7 +20,7 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
 from puzzle_solver.api.middleware import observability_middleware
-from puzzle_solver.api.routers import health, observability, auth
+from puzzle_solver.api.routers import auth, health, observability
 from puzzle_solver.api.v1.routers import puzzle as puzzle_v1
 from puzzle_solver.config.settings import settings
 from puzzle_solver.core.logging_config import setup_logging
@@ -32,19 +32,16 @@ def setup_tracing():
 
     try:
         import importlib.metadata
+
         version = importlib.metadata.version("puzzle-decoder")
     except Exception:
         version = "1.0.0"
 
-    resource = Resource.create({
-        "service.name": "puzzle-solver",
-        "service.version": version
-    })
+    resource = Resource.create({"service.name": "puzzle-solver", "service.version": version})
 
     trace.set_tracer_provider(TracerProvider(resource=resource))
     otlp_exporter = OTLPSpanExporter(
-        endpoint=f"http://{getattr(settings, 'JAEGER_HOST', 'localhost')}:4317",
-        insecure=True
+        endpoint=f"http://{getattr(settings, 'JAEGER_HOST', 'localhost')}:4317", insecure=True
     )
     span_processor = BatchSpanProcessor(otlp_exporter)
     trace.get_tracer_provider().add_span_processor(span_processor)
@@ -65,7 +62,7 @@ app = FastAPI(
     title="Puzzle Solver API",
     description="High-performance puzzle solving service with API versioning",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 app.middleware("http")(observability_middleware)
