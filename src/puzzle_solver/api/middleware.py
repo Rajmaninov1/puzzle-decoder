@@ -10,11 +10,11 @@ from puzzle_solver.core.observability import correlation_id, request_counter, re
 async def observability_middleware(request: Request, call_next):
     """Add observability and versioning to all requests."""
     from opentelemetry import trace
-    
+
     # Set correlation ID
     cid = request.headers.get('x-correlation-id') or str(uuid.uuid4())
     correlation_id.set(cid)
-    
+
     # Add correlation ID to current span
     current_span = trace.get_current_span()
     if current_span and current_span.is_recording():

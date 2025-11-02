@@ -1,5 +1,7 @@
-from pydantic import BaseModel
 from typing import List
+
+from pydantic import BaseModel
+
 
 class PuzzleStats(BaseModel):
     total_found: int
@@ -11,6 +13,7 @@ class PuzzleStats(BaseModel):
     is_complete: bool
     completion_percentage: float
     total_requests: int
+
 
 class PuzzleResult(BaseModel):
     puzzle_text: str

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
-from puzzle_solver.domain.services.fragment import FragmentService
 from puzzle_solver.api.models import HealthResponse, ReadyResponse
+from puzzle_solver.domain.services.fragment import FragmentService
 
 router = APIRouter(tags=["health"])
 

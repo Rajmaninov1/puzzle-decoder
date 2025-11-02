@@ -7,8 +7,7 @@ class Fragment(BaseModel):
     index: int = Field(..., description="Position in the puzzle sequence")
     text: str = Field(..., description="Fragment content")
 
-    def __str__(self) -> str:
-        """String representation."""
+    def __str__(self) -> str:  # String representation with truncated text for readability !!!
         return f"Fragment({self.id}, idx={self.index}, text='{self.text[:20]}...')" if len(
             self.text) > 20 else f"Fragment({self.id}, idx={self.index}, text='{self.text}')"
 
@@ -20,12 +19,11 @@ class FragmentBatch(BaseModel):
     missing_indices: list[int] = Field(default_factory=list, description="Indices of missing fragments")
 
     @property
-    def is_complete(self) -> bool:
-        """Check if all fragments are present."""
+    def is_complete(self) -> bool:  # Check if all fragments are present with no missing indices !!!
         return len(self.missing_indices) == 0
 
     @property
-    def completion_percentage(self) -> float:
-        """Calculate completion percentage."""
+    def completion_percentage(
+            self) -> float:  # Calculate completion percentage based on found vs expected fragments !!!
         total_expected = self.total_found + len(self.missing_indices)
         return (self.total_found / total_expected * 100) if total_expected > 0 else 0.0

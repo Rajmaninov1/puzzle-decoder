@@ -1,15 +1,15 @@
 from puzzle_solver.domain.models.fragment import Fragment
 
 
-def build_validated_url(base_url: str, fragment_id: int) -> str:
-    """Build fragment URL with validation."""
+def build_validated_url(base_url: str,
+                        fragment_id: int) -> str:  # Build fragment URL with validation for non-negative integers !!!
     if not isinstance(fragment_id, int) or fragment_id < 0:
         raise ValueError("fragment_id must be a non-negative integer")
     return f"{base_url}?id={fragment_id}"
 
 
-def find_fragment_bounds(fragments: list[Fragment]) -> tuple[list[Fragment], list[int]]:
-    """Remove duplicates and find missing indices."""
+def find_fragment_bounds(fragments: list[Fragment]) -> tuple[
+    list[Fragment], list[int]]:  # Remove duplicates and find missing indices in fragment sequence !!!
     fragments_by_index = {f.index: f for f in fragments}
     unique_fragments = list(fragments_by_index.values())
     indices = list(fragments_by_index.keys())
@@ -23,8 +23,8 @@ def find_fragment_bounds(fragments: list[Fragment]) -> tuple[list[Fragment], lis
     return unique_fragments, missing_indices
 
 
-def estimate_id_for_index(target_index: int, sample_fragments: list[Fragment]) -> int:
-    """Estimate fragment ID for given index based on sample."""
+def estimate_id_for_index(target_index: int, sample_fragments: list[
+    Fragment]) -> int:  # Estimate fragment ID for given index based on sample data !!!
     if len(sample_fragments) < 2:
         return target_index
 

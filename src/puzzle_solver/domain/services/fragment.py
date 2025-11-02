@@ -14,8 +14,8 @@ from puzzle_solver.utils.fragment_utils import build_validated_url, find_fragmen
 class FragmentService(BaseWebService[Fragment]):
     """Service for fetching puzzle fragments."""
 
-    def __init__(self, config: FragmentServiceConfig | None = None) -> None:
-        """Initialize FragmentService."""
+    def __init__(self,
+                 config: FragmentServiceConfig | None = None) -> None:  # Initialize fragment service with configuration and HTTP client setup !!!
         self.config = config or FragmentServiceConfig()
         self.logger = structlog.get_logger()
         super().__init__(
@@ -30,47 +30,46 @@ class FragmentService(BaseWebService[Fragment]):
             max_concurrent=self.config.max_concurrent
         )
 
-    def parse_response(self, data: dict[str, Any]) -> Fragment | None:
-        """Parse JSON to Fragment model."""
+    def parse_response(self, data: dict[
+        str, Any]) -> Fragment | None:  # Parse JSON response data to Fragment model with validation !!!
         try:
             return Fragment(**data)
         except ValidationError as e:
+            # guardrail: Handle invalid fragment data gracefully
             self.logger.warning("Invalid fragment data", error=str(e))
             return None
 
-    def build_url(self, fragment_id: int) -> str:
-        """Build fragment URL."""
+    def build_url(self, fragment_id: int) -> str:  # Build validated fragment URL with ID parameter !!!
         return build_validated_url(self.base_url, fragment_id)
 
-    async def test_connectivity(self) -> None:
-        """Test connectivity to fragment service."""
+    async def test_connectivity(self) -> None:  # Test connectivity to fragment service by fetching single fragment !!!
         await self.fetch_single(fragment_id=1)
 
-    async def get_fragment(self, fragment_id: int) -> Fragment | None:
-        """Get fragment by ID."""
+    async def get_fragment(self,
+                           fragment_id: int) -> Fragment | None:  # Get single fragment by ID with error handling !!!
         return await self.fetch_single(fragment_id=fragment_id)
 
-    async def get_fragments_batch(self, fragment_ids: list[int]) -> FragmentBatch:
-        """Get multiple fragments with statistics. Used only for testing"""
+    async def get_fragments_batch(self, fragment_ids: list[
+        int]) -> FragmentBatch:  # Get multiple fragments with statistics for testing purposes !!!
         param_list = [{"fragment_id": fid} for fid in fragment_ids]
         fragments = await self.fetch_batch(param_list)
         return self._create_fragment_batch(fragments)
 
-    async def get_fragment_range(self, start_id: int, count: int) -> list[Fragment]:
-        """Get a range of fragments by consecutive IDs."""
+    async def get_fragment_range(self, start_id: int, count: int) -> list[
+        Fragment]:  # Get range of fragments by consecutive IDs for batch processing !!!
         return await self.fetch_range(
             start=start_id,
             count=count,
             param_builder=lambda i: {"fragment_id": i}
         )
 
-    async def _fetch_missing_fragments(self, missing_indices: list[int]) -> list[Fragment]:
-        """Fetch fragments for missing indices."""
+    async def _fetch_missing_fragments(self, missing_indices: list[int]) -> list[
+        Fragment]:  # Fetch fragments for missing indices to complete puzzle !!!
         param_list = [{"fragment_id": idx} for idx in missing_indices]
         return await self.fetch_batch(param_list)
 
-    async def discover_fragments(self, initial_batch_size: int | None = None) -> FragmentBatch:
-        """Discover all puzzle fragments with maximum parallelism."""
+    async def discover_fragments(self,
+                                 initial_batch_size: int | None = None) -> FragmentBatch:  # Discover all puzzle fragments with maximum parallelism and gap detection !!!
         with tracer.start_as_current_span("discover_fragments") as span:
             batch_size = initial_batch_size or self.config.initial_batch_size
             span.set_attribute("batch_size", batch_size)
@@ -108,8 +107,8 @@ class FragmentService(BaseWebService[Fragment]):
             return batch
 
     @staticmethod
-    def _generate_discovery_ranges(batch_size: int) -> list[tuple[int, int]]:
-        """Generate discovery ranges for parallel fragment fetching."""
+    def _generate_discovery_ranges(batch_size: int) -> list[
+        tuple[int, int]]:  # Generate discovery ranges for parallel fragment fetching optimization !!!
         return [
             (1, batch_size),
             (batch_size + 1, batch_size * 2),
@@ -118,8 +117,8 @@ class FragmentService(BaseWebService[Fragment]):
         ]
 
     @staticmethod
-    def _collect_valid_fragments(range_results: list) -> list[Fragment]:
-        """Collect valid fragments from range results."""
+    def _collect_valid_fragments(range_results: list) -> list[
+        Fragment]:  # Collect valid fragments from range results filtering exceptions !!!
         all_fragments = []
         for result in range_results:
             if isinstance(result, list):
@@ -127,8 +126,8 @@ class FragmentService(BaseWebService[Fragment]):
         return all_fragments
 
     @staticmethod
-    def _create_fragment_batch(fragments: list[Fragment]) -> FragmentBatch:
-        """Create a FragmentBatch with statistics."""
+    def _create_fragment_batch(fragments: list[
+        Fragment]) -> FragmentBatch:  # Create FragmentBatch with statistics and missing indices detection !!!
         if not fragments:
             return FragmentBatch(fragments=[], total_found=0, missing_indices=[])
 

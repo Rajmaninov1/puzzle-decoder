@@ -260,9 +260,7 @@ puzzle decoder/
 │   │   └── ci.yml
 ├── scripts/ # Utility scripts and tools
 │   ├── __init__.py
-│   ├── benchmark.py
 │   ├── folder_structure.txt
-│   ├── load_test.py
 │   ├── project_structure.py
 │   └── puzzle_fragmen_endpoint_test.py
 ├── src/ 
@@ -314,10 +312,6 @@ puzzle decoder/
 │   │   └── __init__.py
 │   └── __init__.py
 ├── tests/ 
-│   ├── performance/ 
-│   │   ├── __init__.py
-│   │   ├── test_benchmark.py
-│   │   └── test_load.py
 │   ├── unit/ # Unit tests
 │   │   ├── __init__.py
 │   │   ├── test_fragment_service.py
@@ -344,15 +338,6 @@ uv run pytest
 
 # Run specific test files
 uv run pytest tests/unit/test_puzzle_service.py -v
-
-# Run performance tests
-uv run pytest tests/performance/ -v
-
-# Run load testing script
-uv run python scripts/load_test.py --users 10 --requests 50 --endpoint /health
-
-# Run benchmark script
-uv run python scripts/benchmark.py
 ```
 
 ___

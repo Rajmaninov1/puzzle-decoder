@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, UTC
-from typing import Optional
 
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -10,7 +9,7 @@ from puzzle_solver.config.settings import settings
 security = HTTPBearer()
 
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
     """Create a JWT access token."""
     to_encode = data.copy()
     if expires_delta:
