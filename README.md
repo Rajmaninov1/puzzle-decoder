@@ -4,6 +4,13 @@ A high-performance Python application that solves puzzles by fetching and assemb
 
 ___
 
+## Author
+
+Julian Tolosa 
+GitHub: [@Rajmaninov1](https://github.com/Rajmaninov1)
+
+___
+
 ## How to Run
 
 ___
