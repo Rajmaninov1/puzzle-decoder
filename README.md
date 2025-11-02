@@ -160,7 +160,7 @@ curl http://localhost:8000/metrics
 
 ___
 
-## Performance Results
+## 🚀 Performance Results
 
 ```
 2025-11-01T23:47:26.705129Z [info     ] Fragment discovery completed   completion_rate=100.0% correlation_id=6d5c7734-d77e-4d81-9000-a6b30abfdd0e missing_count=0 total_found=28
@@ -179,16 +179,20 @@ ___
 2025-11-01T23:47:26.707242Z [info     ] Less than one second! :D       correlation_id=6d5c7734-d77e-4d81-9000-a6b30abfdd0e
 ```
 
+### ✨ Bonus Achievement
+
+**Sub-second execution achieved!** The puzzle solver completes in **0.514 seconds**, well under the 1-second bonus requirement.
+
 ___
 
 ## Strategy for Speed and Correctness
 
-### Key settings for performance tuning:
-- `FRAGMENT_SERVICE__MAX_CONCURRENT`: Parallel request limit (default: 500)
+### 🧠 Key settings for performance tuning:
+- `FRAGMENT_SERVICE__MAX_CONCURRENT`: Parallel request limit (default: 40)
 - `FRAGMENT_SERVICE__TIMEOUT`: Request timeout in seconds (default: 0.5)
 - `FRAGMENT_SERVICE__INITIAL_BATCH_SIZE`: Discovery batch size (default: 10)
 
-### Speed Optimizations
+### 🚀 Speed Optimizations
 - **Massive Concurrency**: Configurable parallel HTTP requests using aiohttp with unlimited connection pooling
 - **Optimized Discovery**: Four concurrent range scans for fragment discovery of batch size (batch size * 4)
 - **Fast JSON Processing**: orjson for high-performance JSON parsing
@@ -198,7 +202,7 @@ ___
 - **Singleton HTTP Manager**: Shared session across all requests with double-checked locking
 - **Batch Processing**: Parallel fragment fetching with asyncio.gather for maximum throughput
 
-### Fragment Completion Strategies
+### ✅ Fragment Completion Strategies
 - **Gap Detection**: Automatic identification of missing indices between min/max fragment range
 - **Continuous Search Loop**: Iterative missing fragment discovery until 100% completion
 - **Duplicate Elimination**: Automatic deduplication by fragment index to prevent duplicates
@@ -206,7 +210,7 @@ ___
 - **Missing Index Tracking**: Real-time monitoring of incomplete fragment sequences
 - **Completion Validation**: Ensures no gaps exist in the final fragment sequence
 
-### Correctness Guarantees
+### ✅ Correctness Guarantees
 - **Pydantic Models**: Type-safe data structures with automatic validation
 - **Structured Validation**: Fragment data integrity checks at parse time
 - **Retry Logic**: Tenacity-based retries for network failures with exponential backoff
@@ -217,7 +221,7 @@ ___
 
 ___
 
-### Architecture
+### 🧠 Architecture
 ```
 ┌─────────────────┐ ┌─────────────────┐
 │   CLI Layer     │ │  FastAPI Layer  │
@@ -241,7 +245,7 @@ ___
                                 └─────────────────┘
 ```
 
-### Middleware Stack
+### 🧠 Middleware Stack
 ```
 Request → Observability Middleware → API Versioning → Authentication → Route Handler
     ↓           ↓                        ↓               ↓
@@ -251,7 +255,7 @@ Correlation  Metrics &              Version         JWT Token
 
 ___
 
-## Project Structure
+## 🧠 Project Structure
 
 ```
 puzzle decoder/
@@ -330,7 +334,7 @@ puzzle decoder/
 └── uv.lock
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
@@ -340,7 +344,7 @@ uv run pytest
 uv run pytest tests/unit/test_puzzle_service.py -v
 ```
 
-## 🔍 Code Quality
+## 🧼 Code Quality
 
 ```bash
 # Run linting
@@ -358,7 +362,7 @@ uv run ruff format src/ tests/
 
 ___
 
-## Monitoring
+## 🧠 Monitoring
 
 The application provides structured logging with:
 - Request/response timing
