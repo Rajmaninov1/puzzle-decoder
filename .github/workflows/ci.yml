@@ -63,6 +63,14 @@ jobs:
       - name: Install dependencies
         run: uv sync --dev
 
+      # Run ruff linting
+      - name: Run ruff check
+        run: uv run ruff check src/ tests/
+
+      # Run ruff formatting check
+      - name: Run ruff format check
+        run: uv run ruff format --check src/ tests/
+
   # Build and test Docker services (only on the main branch)
   docker:
     runs-on: ubuntu-latest
@@ -75,8 +83,8 @@ jobs:
 
       # Build and start services
       - name: Build Docker services
-        run: docker-compose build
+        run: docker compose build
 
       # Override puzzle-solver to run CLI instead of web server
       - name: Test puzzle solver CLI
-        run: docker-compose run --rm puzzle-solver python -m puzzle_solver.cli.main
+        run: docker compose run --rm puzzle-solver python -m puzzle_solver.cli.main
