@@ -20,6 +20,8 @@ dependencies = [
     "opentelemetry-exporter-otlp>=1.20.0",
     "prometheus-client>=0.19.0",
     "python-jose[cryptography]>=3.3.0",
+    # Optional uvloop: only install on Unix-like OS with CPython
+    "uvloop>=0.19.0; platform_system != 'Windows' and implementation_name == 'cpython'",
 ]
 
 [project.scripts]
@@ -53,4 +55,4 @@ line-length = 120
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
-ignore = ["E501"]  # Line too long (handled by formatter)
+ignore = ["E501"]

@@ -32,7 +32,7 @@ ___
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/Rajmaninov1/puzzle-decoder
 cd puzzle-decoder
 
 # Install dependencies
