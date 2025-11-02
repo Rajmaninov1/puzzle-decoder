@@ -1,0 +1,45 @@
+services:
+    jaeger:
+        image: jaegertracing/all-in-one:latest
+        ports:
+            - "16686:16686"
+            - "4317:4317"
+            - "4318:4318"
+        environment:
+            - COLLECTOR_OTLP_ENABLED=true
+        networks:
+            - puzzle
+    
+    puzzle-server:
+        image: ifajardov/puzzle-server
+        networks:
+            - puzzle
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8080/fragment?n=1"]
+            interval: 30s
+            timeout: 3s
+            start_period: 5s
+            retries: 3
+    
+    puzzle-solver:
+        build: .
+        environment:
+            - FRAGMENT_SERVICE__BASE_URL=http://puzzle-server:8080
+            - JAEGER_HOST=jaeger
+        networks:
+            - puzzle
+        ports:
+            - "8000:8000"
+        depends_on:
+            - puzzle-server
+            - jaeger
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+            interval: 30s
+            timeout: 3s
+            start_period: 5s
+            retries: 3
+
+networks:
+    puzzle:
+        driver: bridge

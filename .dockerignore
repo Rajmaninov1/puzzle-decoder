@@ -1,0 +1,34 @@
+# Development files
+.git
+.github
+.gitignore
+README.md
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+.pytest_cache
+
+# Virtual environments
+.venv
+venv
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Test files
+tests/
+scripts/
+
+# Root level cache
+__pycache__
+
+# Build artifacts
+build/
+dist/
+*.egg-info

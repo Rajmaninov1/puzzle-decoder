@@ -1,0 +1,80 @@
+puzzle decoder/
+├── .github/ 
+│   └── workflows/ # CI/CD automation
+│   │   └── ci.yml
+├── scripts/ # Utility scripts and tools
+│   ├── __init__.py
+│   ├── benchmark.py
+│   ├── folder_structure.txt
+│   ├── load_test.py
+│   ├── project_structure.py
+│   └── puzzle_fragmen_endpoint_test.py
+├── src/ 
+│   ├── puzzle_solver/ 
+│   │   ├── api/ # FastAPI web interface
+│   │   │   ├── routers/ 
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── auth.py
+│   │   │   │   ├── health.py
+│   │   │   │   └── observability.py
+│   │   │   ├── v1/ 
+│   │   │   │   ├── routers/ 
+│   │   │   │   │   ├── __init__.py
+│   │   │   │   │   └── puzzle.py
+│   │   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   ├── auth.py
+│   │   │   ├── main.py
+│   │   │   ├── middleware.py
+│   │   │   ├── models.py
+│   │   │   └── versioning.py
+│   │   ├── cli/ # Command-line interface
+│   │   │   ├── __init__.py
+│   │   │   └── main.py
+│   │   ├── clients/ # HTTP client management
+│   │   │   ├── __init__.py
+│   │   │   └── http_client.py
+│   │   ├── config/ # Configuration and settings
+│   │   │   ├── __init__.py
+│   │   │   └── settings.py
+│   │   ├── core/ # Logging and core utilities
+│   │   │   ├── __init__.py
+│   │   │   ├── logging_config.py
+│   │   │   └── observability.py
+│   │   ├── domain/ 
+│   │   │   ├── models/ # Data models (Fragment, FragmentBatch)
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── fragment.py
+│   │   │   │   └── puzzle.py
+│   │   │   ├── services/ # Business logic (PuzzleService, FragmentService)
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── base.py
+│   │   │   │   ├── fragment.py
+│   │   │   │   └── puzzle.py
+│   │   │   └── __init__.py
+│   │   ├── utils/ # Utility functions
+│   │   │   ├── __init__.py
+│   │   │   └── fragment_utils.py
+│   │   └── __init__.py
+│   └── __init__.py
+├── tests/ 
+│   ├── performance/ 
+│   │   ├── __init__.py
+│   │   ├── test_benchmark.py
+│   │   └── test_load.py
+│   ├── unit/ # Unit tests
+│   │   ├── __init__.py
+│   │   ├── test_fragment_service.py
+│   │   ├── test_fragment_utils.py
+│   │   └── test_puzzle_service.py
+│   ├── __init__.py
+│   └── conftest.py
+├── .dockerignore
+├── .env
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+├── Dockerfile
+├── pyproject.toml
+├── README.md
+└── uv.lock
