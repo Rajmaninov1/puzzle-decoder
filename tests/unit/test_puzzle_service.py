@@ -40,12 +40,12 @@ class TestPuzzleService:
         mock_fragment_service.discover_fragments.return_value = batch
 
         service = PuzzleService(mock_fragment_service, puzzle_config)
-        text, elapsed, stats = await service.solve_puzzle()
+        result = await service.solve_puzzle()
 
-        assert text == "Hello world test"
-        assert elapsed > 0
-        assert stats["total_fragments"] == 3
-        assert stats["is_complete"] is True
+        assert result.puzzle_text == "Hello world test"
+        assert result.elapsed_seconds > 0
+        assert result.stats.total_found == 3
+        assert result.stats.is_complete is True
 
     @pytest.mark.asyncio
     async def test_solve_puzzle_no_fragments(self, mock_fragment_service, puzzle_config):
@@ -53,22 +53,22 @@ class TestPuzzleService:
         mock_fragment_service.discover_fragments.return_value = batch
 
         service = PuzzleService(mock_fragment_service, puzzle_config)
-        text, elapsed, stats = await service.solve_puzzle()
+        result = await service.solve_puzzle()
 
-        assert text == ""
-        assert "error" in stats
-        assert stats["error"] == "No fragments found"
+        assert result.puzzle_text == ""
+        assert result.stats.total_found == 0
+        assert result.stats.is_complete is False
 
     @pytest.mark.asyncio
     async def test_solve_puzzle_exception(self, mock_fragment_service, puzzle_config):
         mock_fragment_service.discover_fragments.side_effect = Exception("Test error")
 
         service = PuzzleService(mock_fragment_service, puzzle_config)
-        text, elapsed, stats = await service.solve_puzzle()
+        result = await service.solve_puzzle()
 
-        assert text == ""
-        assert "error" in stats
-        assert "Test error" in stats["error"]
+        assert result.puzzle_text == ""
+        assert result.stats.total_found == 0
+        assert result.stats.is_complete is False
 
     def test_assemble_puzzle_text_normal(self, mock_fragment_service, puzzle_config, sample_fragments):
         service = PuzzleService(mock_fragment_service, puzzle_config)
@@ -86,15 +86,16 @@ class TestPuzzleService:
 
         stats = service._create_success_stats(batch, 1.5)
 
-        assert stats["total_fragments"] == 3
-        assert stats["missing_fragments"] == 0
-        assert stats["completion_rate"] == 1.0
-        assert stats["time_elapsed"] == 1.5
-        assert stats["fragments_per_second"] == 2.0
+        assert stats.total_found == 3
+        assert stats.missing_count == 0
+        assert stats.completion_rate == 1.0
+        assert stats.time_elapsed == 1.5
+        assert stats.fragments_per_second == 2.0
 
-    def test_create_error_stats(self, mock_fragment_service, puzzle_config):
+    def test_create_error_result(self, mock_fragment_service, puzzle_config):
         service = PuzzleService(mock_fragment_service, puzzle_config)
-        stats = service._create_error_stats("Test error", 1.0)
+        result = service._create_error_result("Test error", 1.0)
 
-        assert stats["error"] == "Test error"
-        assert stats["time_elapsed"] == 1.0
+        assert result.puzzle_text == ""
+        assert result.elapsed_seconds == 1.0
+        assert result.stats.total_found == 0

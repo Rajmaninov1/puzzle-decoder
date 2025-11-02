@@ -75,22 +75,51 @@ class TestFragmentService:
     @pytest.mark.asyncio
     async def test_get_fragment_range(self, fragment_config, sample_fragments):
         service = FragmentService(fragment_config)
-        service.fetch_range = AsyncMock(return_value=sample_fragments)
+        service.fetch_batch = AsyncMock(return_value=sample_fragments)
 
         fragments = await service.get_fragment_range(1, 3)
 
         assert len(fragments) == 3
-        service.fetch_range.assert_called_once()
+        service.fetch_batch.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_discover_fragments(self, fragment_config, sample_fragments):
+    async def test_discover_fragments(self, fragment_config):
         service = FragmentService(fragment_config)
-        service.get_fragment_range = AsyncMock(return_value=sample_fragments)
+        # Create complete fragments without missing indices to avoid infinite loop
+        complete_fragments = [
+            Fragment(id=1, index=0, text="Hello"),
+            Fragment(id=2, index=1, text="world"),
+            Fragment(id=3, index=2, text="test")
+        ]
+        service.fetch_batch = AsyncMock(return_value=complete_fragments)
 
         batch = await service.discover_fragments()
 
         assert batch.total_found == 3
-        assert service.get_fragment_range.call_count == 4  # 4 ranges
+        assert len(batch.missing_indices) == 0
+        assert batch.is_complete is True
+        assert service.fetch_batch.call_count == 4  # 4 ranges
+
+    @pytest.mark.asyncio
+    async def test_discover_fragments_with_missing(self, fragment_config, sample_fragments):
+        service = FragmentService(fragment_config)
+        # First call returns fragments with missing index 2
+        # Second call returns the missing fragment
+        missing_fragment = Fragment(id=4, index=2, text="missing")
+        service.fetch_batch = AsyncMock(side_effect=[
+            sample_fragments,  # Initial discovery
+            sample_fragments,  # Range 2
+            sample_fragments,  # Range 3  
+            sample_fragments,  # Range 4
+            [missing_fragment]  # Missing fragment fetch
+        ])
+
+        batch = await service.discover_fragments()
+
+        assert batch.total_found == 4  # 3 original + 1 missing
+        assert len(batch.missing_indices) == 0
+        assert batch.is_complete is True
+        assert service.fetch_batch.call_count == 5  # 4 ranges + 1 missing fetch
 
     def test_generate_discovery_ranges(self, fragment_config):
         service = FragmentService(fragment_config)
