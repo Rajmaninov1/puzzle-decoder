@@ -21,7 +21,7 @@ jobs:
 
       # Install uv package manager for fast dependency resolution
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v7.1.3
         with:
           version: "latest"
 
@@ -39,7 +39,7 @@ jobs:
 
       # Upload coverage results to Codecov (non-blocking)
       - name: Upload coverage
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5.5.1
         with:
           file: ./coverage.xml
           fail_ci_if_error: false
@@ -49,11 +49,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Check out the repository code
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5.0.0
 
       # Install uv package manager
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v7.1.3
 
       # Use Python 3.12 for linting (consistent version)
       - name: Set up Python
@@ -79,7 +79,7 @@ jobs:
     
     steps:
       # Check out the repository code
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5.0.0
 
       # Build and start services
       - name: Build Docker services
